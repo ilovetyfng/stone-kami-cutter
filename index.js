@@ -14,8 +14,6 @@ function computerPlay () {
 
 function rockPaperScissors (playerSelection, computerSelection) {
     playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-    console.log(playerSelection);
-    console.log(computerSelection);
     let temp = -2;
     switch (computerSelection) {
         case "Rock":
@@ -62,17 +60,53 @@ function rockPaperScissors (playerSelection, computerSelection) {
         case -2:
             return "wtf";
         case -1:
+            addComputerScore();
             return "You Lose! " + computerSelection + " beats " + playerSelection;
         case 0:
             return "Draw!";
         case 1:
+            addPlayerScore();
             return "You Win! " + playerSelection + " beats " + computerSelection;
     }
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        let selection = window.prompt("Select Rock Paper Scissor:");
-        console.log(rockPaperScissors(selection, computerPlay())+ "\n");
-    }
+function game(selection) {
+    result.textContent = rockPaperScissors(selection, computerPlay());
 }
+
+let playerScore = 0;
+let computerScore = 0;
+
+function printToContainer(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    container.appendChild(div);
+}
+
+function addComputerScore() {
+    computerScore++; 
+    computer.textContent = computerScore;
+    if (computerScore == 5) {
+        printToContainer("Computer Win!");
+    };
+}
+
+function addPlayerScore() {
+    playerScore++; 
+    player.textContent = playerScore;
+    if (playerScore == 5) {
+        printToContainer("Player Win!");
+    };
+}
+
+const result = document.querySelector('.result');
+const container = document.querySelector('.container');
+const player = document.querySelector('.player');
+const computer = document.querySelector('.computer')
+
+const btns = document.querySelectorAll('button');
+btns.forEach(function(btn) {
+    btn.addEventListener('click', function(){
+        game(this.getAttribute('id'))
+    })
+})
